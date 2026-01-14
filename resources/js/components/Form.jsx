@@ -100,7 +100,11 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
   };
 
   return (
-    <div className={`contact-form ${className}`}>
+    <form 
+      onSubmit={handleSubmit}           // ← Conectamos handleSubmit
+      className={`contact-form ${className}`}
+      noValidate                        // Opcional: desactiva validación HTML5 por defecto
+    >
       {title && <h1 className="text-center">{title}</h1>}
       
       {fields.map((fieldName) => {
@@ -180,7 +184,7 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
           {submitText}
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

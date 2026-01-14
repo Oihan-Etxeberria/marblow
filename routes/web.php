@@ -11,6 +11,9 @@ use App\Http\Controllers\AuthController;
 
 // Test
 Route::get('/test', [TestController::class, 'test'])->name('test');
+Route::get('/dashboard', function () {
+    return Inertia::render('Home');
+})->name('dashboard');
 
 // Página principal
 Route::get('/', function () {
@@ -20,6 +23,10 @@ Route::get('/', function () {
 // Autenticación
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
+
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
@@ -34,6 +41,7 @@ Route::get('/blowers/{blower:slug}', [BlowerController::class, 'show'])->name('b
 Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
 Route::get('/teams/{team:slug}', [TeamController::class, 'show'])->name('teams.show');
 Route::post('/teams/{team:slug}/join', [TeamController::class, 'join'])->name('teams.join');
+
 // Contacto
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

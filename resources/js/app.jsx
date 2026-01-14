@@ -21,8 +21,9 @@ createInertiaApp({
             import.meta.glob('./pages/**/*.{tsx,jsx}'),
         );
 
-        // Corregido: type assertion para TypeScript
-        (page as any).default.layout = (page as any).default.layout || ((page: React.ReactNode) => <Layout>{page}</Layout>);
+        if (!page.default.layout) {
+            page.default.layout = (children) => <Layout>{children}</Layout>;
+        }
         
         return page;
     },

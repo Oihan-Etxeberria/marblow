@@ -1,10 +1,13 @@
 import React from "react";
+import { Link, usePage } from '@inertiajs/react';
 // 1. Importamos 'Button' aquí
 import { Navbar, Nav, Container, NavDropdown, Button } from "react-bootstrap";
 
 function NavBar() {
+  const { auth } = usePage().props;
+  
   return (
-    <Navbar expand="lg" variant="dark" style={{ backgroundColor: "#272626" }}>
+    <Navbar expand="lg" variant="dark" style={{ backgroundColor: "#272626", position: "relative", zIndex: 1000 }}>
       <Container fluid>
         <Navbar.Toggle aria-controls="navbarUnderlineExample" />
         <Navbar.Brand href="#">

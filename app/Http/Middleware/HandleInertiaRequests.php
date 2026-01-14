@@ -17,7 +17,7 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
-    public function version(Request $request): string|null
+    public function version(Request $request): ?string
     {
         return parent::version($request);
     }
@@ -29,30 +29,11 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
-            // Datos del usuario autenticado
+        return [
+            ...parent::share($request),
             'auth' => [
-                'user' => $request->user() ? [
-                    'id' => $request->user()->id,
-                    'name' => $request->user()->name,
-                    'email' => $request->user()->email,
-                    'is_admin' => $request->user()->is_admin ?? false,
-                ] : null,
+                'user' => $request->user(),
             ],
-            
-            // Mensajes flash (para mostrar alerts)
-            'flash' => [
-                'success' => fn () => $request->session()->get('success'),
-                'error' => fn () => $request->session()->get('error'),
-                'warning' => fn () => $request->session()->get('warning'),
-                'info' => fn () => $request->session()->get('info'),
-            ],
-            
-            // Datos globales que quieras compartir
-            'app' => [
-                'name' => config('app.name'),
-                'url' => config('app.url'),
-            ],
-        ]);
+        ];
     }
 }

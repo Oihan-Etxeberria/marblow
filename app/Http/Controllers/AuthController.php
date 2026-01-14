@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -35,5 +36,18 @@ class AuthController extends Controller
         return back()->withErrors([
             'username' => 'The provided credentials are incorrect.',
         ]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+
+    public function showRegister()
+    {
+        return Inertia::render('Register');
     }
 }
