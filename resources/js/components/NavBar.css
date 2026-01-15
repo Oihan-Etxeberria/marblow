@@ -1,0 +1,175 @@
+.custom-navbar {
+  background: #272626;
+  color: white;
+  position: relative;
+  z-index: 1000;
+  padding: 12px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  display: block;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.hamburger span {
+  height: 4px;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.35s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Menú principal */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-menu a:hover {
+  color: #38c0ff;
+}
+
+/* Dropdown CSS puro */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
+
+.arrow {
+  font-size: 0.9em;
+  transition: transform 0.25s;
+}
+
+.dropdown:hover .dropdown-toggle .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0px);   /* ← el mismo valor que el height del ::before */
+  left: -20px;
+  min-width: 180px;
+  background: #272626;
+  border: 1px solid #444;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  padding: 10px 0;
+  margin-top: 0;           /* quitamos cualquier margin extra */
+  z-index: 1002;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+  background: #3a3a3a;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: #444;
+  margin: 6px 0;
+}
+
+/* Hover para abrir dropdown */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 850px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 280px;
+    background: #272626;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 30px;
+    transition: right 0.4s ease;
+    gap: 1.8rem;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  /* En móvil el dropdown se comporta diferente (siempre visible cuando menú abierto) */
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    border: none;
+    padding: 0 0 0 20px;
+    margin-top: 0;
+    display: none; /* oculto por defecto */
+  }
+
+  .dropdown.active .dropdown-content {
+    display: block;
+  }
+}

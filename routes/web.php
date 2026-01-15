@@ -28,7 +28,12 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth');
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/verify-email/{id}/{token}', [AuthController::class, 'verifyEmail'])
+    ->name('verify.email');
+Route::post('/resend-verification', [AuthController::class, 'resendVerification'])
+->name('verification.resend');
 
 // Eventos
 Route::get('/events', [HomeController::class, 'events'])->name('events');

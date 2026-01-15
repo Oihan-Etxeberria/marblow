@@ -26,8 +26,8 @@ const Home = () => {
         }}
       />
       <Highlights />
-      <AdBanner position="bottom" closeable={true} />
-      <Hero
+      {/* <AdBanner position="bottom" closeable={true} /> */}
+      {/* <Hero
         primaryButton={{
             label: "Log out!",
             href: "/logout",
@@ -43,14 +43,9 @@ const Home = () => {
               <p>Email: {user.email}</p>
               <p>ID: {user.id}</p>
             </div>
-
-            {/* Ejemplo: mostrar contenido solo si está logueado */}
-            {auth.isAuthenticated && (
-              <p className="mt-4 text-green-600">Estás completamente autenticado 🎉</p>
-            )}
           </div>
         }
-      />
+      /> */}
     </>
   );
 };

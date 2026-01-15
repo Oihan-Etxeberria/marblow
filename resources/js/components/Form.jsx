@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const FIELD_CONFIG = {
   name: {
@@ -36,16 +36,44 @@ const FIELD_CONFIG = {
     label: 'Password',
     type: 'password',
     placeholder: 'Enter password',
+    required: true,
+    helpText: "Minimum 8 characters"
+  },
+  password_confirmation: {
+    label: 'Confirm Password',
+    type: 'password',
+    placeholder: 'Confirm your password',
     required: true
   }
 };
 
-const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Send", className = "" }) => {
+const Form = ({ 
+  fields = [], 
+  onSubmit, 
+  title, 
+  secondaryButton, 
+  submitText = "Send", 
+  className = "", 
+  serverErrors = {},
+  clientValidation = true
+}) => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
 
+  // Actualizar errores cuando llegan del servidor
+  useEffect(() => {
+    if (serverErrors) {
+      setErrors(prev => ({
+        ...prev,
+        ...serverErrors
+      }));
+    }
+  }, [serverErrors]);
+
   const validateField = (fieldName, value) => {
     const config = FIELD_CONFIG[fieldName];
+    
+    if (!clientValidation) return null;
     
     if (config.required && !value) {
       return `${config.label} is required`;
@@ -56,6 +84,18 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
       if (!emailRegex.test(value)) {
         return 'Please enter a valid email address';
       }
+    }
+    
+    // Validación especial para confirmación de contraseña
+    if (fieldName === 'password_confirmation' && value) {
+      if (value !== formData.password) {
+        return 'Passwords do not match';
+      }
+    }
+    
+    // Validación de longitud de contraseña
+    if (fieldName === 'password' && value && value.length < 8) {
+      return 'Password must be at least 8 characters';
     }
     
     return null;
@@ -70,45 +110,77 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
       [name]: fieldValue
     }));
 
-    const error = validateField(name, fieldValue);
-    setErrors(prev => ({
-      ...prev,
-      [name]: error
-    }));
+    // Solo validar si clientValidation es true
+    if (clientValidation) {
+      // Si estamos cambiando la contraseña y hay confirmación, validar ambas
+      if (name === 'password' && formData.password_confirmation) {
+        const confirmError = validateField('password_confirmation', formData.password_confirmation);
+        setErrors(prev => ({
+          ...prev,
+          password_confirmation: confirmError
+        }));
+      }
+
+      const error = validateField(name, fieldValue);
+      setErrors(prev => ({
+        ...prev,
+        [name]: error
+      }));
+    } else {
+      // Si no hay validación del cliente, limpiar errores de este campo
+      setErrors(prev => ({
+        ...prev,
+        [name]: null
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const newErrors = {};
-    let isValid = true;
+    // Solo validar del lado del cliente si clientValidation es true
+    if (clientValidation) {
+      const newErrors = {};
+      let hasErrors = false;
 
-    fields.forEach(fieldName => {
-      const value = formData[fieldName];
-      const error = validateField(fieldName, value);
-      if (error) {
-        newErrors[fieldName] = error;
-        isValid = false;
+      fields.forEach(fieldName => {
+        const value = formData[fieldName];
+        const error = validateField(fieldName, value);
+        if (error) {
+          newErrors[fieldName] = error;
+          hasErrors = true;
+        }
+      });
+
+      setErrors(newErrors);
+
+      if (hasErrors) {
+        return; // Detener envío si hay errores
       }
-    });
+    }
 
-    setErrors(newErrors);
-
-    if (isValid && onSubmit) {
+    // Si llegamos aquí, es porque:
+    // 1. clientValidation es false (no validamos, enviamos siempre)
+    // 2. clientValidation es true y no hubo errores
+    if (onSubmit) {
       onSubmit(formData);
     }
   };
 
   return (
     <form 
-      onSubmit={handleSubmit}           // ← Conectamos handleSubmit
+      onSubmit={handleSubmit}
       className={`contact-form ${className}`}
-      noValidate                        // Opcional: desactiva validación HTML5 por defecto
+      noValidate
     >
       {title && <h1 className="text-center">{title}</h1>}
       
       {fields.map((fieldName) => {
         const field = FIELD_CONFIG[fieldName];
+        if (!field) return null;
+        
+        const serverError = serverErrors[fieldName];
+        const clientError = errors[fieldName];
         
         return (
           <div key={fieldName} className={`form-group my-2 ${field.className || ''}`}>
@@ -136,7 +208,7 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
                 
                 {field.type === 'textarea' ? (
                   <textarea
-                    className="form-control"
+                    className={`form-control ${serverError ? 'is-invalid' : ''}`}
                     id={fieldName}
                     name={fieldName}
                     rows={field.rows || 3}
@@ -147,7 +219,7 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
                 ) : (
                   <input
                     type={field.type}
-                    className="form-control"
+                    className={`form-control ${serverError ? 'is-invalid' : ''}`}
                     id={fieldName}
                     name={fieldName}
                     placeholder={field.placeholder}
@@ -163,9 +235,9 @@ const Form = ({ fields = [], onSubmit, title, secondaryButton, submitText = "Sen
                   </small>
                 )}
                 
-                {errors[fieldName] && (
+                {(clientError || serverError) && (
                   <small className="form-text text-danger">
-                    {errors[fieldName]}
+                    {clientError || serverError}
                   </small>
                 )}
               </>

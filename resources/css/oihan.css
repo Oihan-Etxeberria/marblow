@@ -119,12 +119,3 @@ footer .iconos img:hover {
 main {
   flex: 1;
 }
-
-/* Arreglando el nav */
-.nav-link-white .dropdown-toggle {
-  color: white !important;
-}
-
-.nav-link-white .dropdown-toggle:hover {
-  color: rgba(255, 255, 255, 0.8) !important;
-}

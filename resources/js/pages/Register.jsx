@@ -1,32 +1,60 @@
-import { usePage } from '@inertiajs/react'
+import { router } from '@inertiajs/react';
 import Hero from '@/components/Hero';
-import "./Contact.css"
+import "./Contact.css";
+import Form from '@/components/Form';
 
-const Register = () => {
+const Register = ({ errors: serverErrors = {} }) => {
+  
+  const handleSubmit = (formData) => {
+    router.post(route('register'), formData, {
+      preserveState: true,
+      preserveScroll: true,
+      replace: true,
+
+      onStart: () => {
+        console.log('Enviando registro...');
+      },
+
+      onSuccess: (page) => {
+        console.log('Registro exitoso!', page);
+      },
+
+      onError: (errors) => {
+        console.log('Errores de validación:', errors);
+        
+        const firstErrorField = Object.keys(errors)[0];
+        if (firstErrorField) {
+          document.getElementById(firstErrorField)?.scrollIntoView({ behavior: 'smooth' });
+        }
+      },
+
+      onFinish: () => {
+        console.log('Petición finalizada');
+      },
+    });
+  };
+
   return (
     <>
       <Hero 
         title="Register"
+        subtitle="Create your account to start betting!"
         cosas={
-            <form class="contact-form">
-                <div class="form-group my-2">
-                    <label class="required-label"  for="exampleInputPassword1">Name</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter name" required/>
-                </div>
-                <div class="form-group my-2">
-                    <label class="required-label" for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required/>
-                </div>
-                <div class="form-group my-2">
-                    <label class="required-label"  for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" placeholder="Enter password" required/>
-                </div>
-                <div class="regist">
-                    <button type="submit" class="btn btn-primary">Send</button>
-                </div>
-            </form>
+          <Form 
+            fields={['name', 'email', 'password', 'password_confirmation']}
+            onSubmit={handleSubmit}
+            submitText="Register"
+            secondaryButton={{ href: '/login', text: 'Already have an account?' }}
+            serverErrors={serverErrors}
+            clientValidation={true} // ← Mantiene validación cliente (valor por defecto)
+          />
         }
       />
+      {serverErrors.message && (
+        <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">
+          {serverErrors.message}
+        </div>
+      )}
     </>
   );
 };
