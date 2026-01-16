@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Blower;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -13,6 +14,11 @@ class BlowerController extends Controller
     public function index()
     {
         $blowers = Blower::orderBy('name')->get();
+
+        if (request()->header('X-Inertia')) {
+            return Inertia::location(route('blowers.index'));
+        }
+
         return view('pages.blowers', compact('blowers'));
     }
 

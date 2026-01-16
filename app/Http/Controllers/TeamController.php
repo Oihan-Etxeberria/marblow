@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Team;
 use App\Models\Blower;
 use Illuminate\Http\Request;
@@ -13,6 +14,10 @@ class TeamController extends Controller
     public function index()
     {
         $teams = Team::withCount('blowers')->get();
+        if (request()->header('X-Inertia')) {
+            return Inertia::location(route('teams.index'));
+        }
+
         return view('pages.teams', compact('teams'));
     }
 
