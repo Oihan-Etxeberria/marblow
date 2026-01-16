@@ -74,10 +74,7 @@ class AuthController extends Controller
         ]);
 
         // Generar URL de verificación
-        $verificationUrl = route('verify.email', [
-            'token' => $user->email_verification_token,
-            'id' => $user->id
-        ]);
+        $verificationUrl = url("/verify-email/{$user->id}/{$user->email_verification_token}");
 
         // Enviar email de verificación
         Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
