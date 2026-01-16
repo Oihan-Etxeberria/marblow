@@ -86,7 +86,7 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
+                                    <a className="dropdown-item" href="/previous">
                                         Previous Events
                                     </a>
                                 </li>
@@ -105,6 +105,15 @@ const Navbar = () => {
                                 href={route('contact')}
                             >
                                 Contact
+                            </Link>
+                        </li>
+
+                        <li className="nav-item">
+                            <Link 
+                                className={`nav-link ${isActive('contact') ? 'active' : ''}`}
+                                href={route('bets')}
+                            >
+                                Bets
                             </Link>
                         </li>
 

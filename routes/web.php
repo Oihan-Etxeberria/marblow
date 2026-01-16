@@ -15,6 +15,15 @@ Route::get('/dashboard', function () {
     return Inertia::render('Home');
 })->name('dashboard');
 
+Route::get('/deploy', function () {
+    return Inertia::render('Deploy');
+})->name('deploy');
+
+// Bets
+Route::get('/bets', function () {
+    return Inertia::render('Bets');
+})->name('bets');
+
 // Página principal
 Route::get('/', function () {
     return Inertia::render('Home');
@@ -35,8 +44,15 @@ Route::get('/verify-email/{id}/{token}', [AuthController::class, 'verifyEmail'])
 Route::post('/resend-verification', [AuthController::class, 'resendVerification'])
 ->name('verification.resend');
 
-// Eventos
-Route::get('/events', [HomeController::class, 'events'])->name('events');
+//Events
+Route::get('/events', function () {
+    return Inertia::render('Events');
+})->name('events');
+
+//previous events
+Route::get('/previous', function () {
+    return Inertia::render('Previous');
+})->name('previous');
 
 // Blowers - Públicas
 Route::get('/blowers', [BlowerController::class, 'index'])->name('blowers.index');
