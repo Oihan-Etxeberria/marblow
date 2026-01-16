@@ -51,7 +51,15 @@ Route::post('/teams/{team:slug}/join', [TeamController::class, 'join'])->name('t
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+//Events
+Route::get('/events', function () {
+    return Inertia::render('Events');
+})->name('events');
 
+//previous events
+Route::get('/previous', function () {
+    return Inertia::render('Previous');
+})->name('previous');
 
 // Rutas Protegidas (Admin)
 Route::middleware(['auth'])->group(function () {
