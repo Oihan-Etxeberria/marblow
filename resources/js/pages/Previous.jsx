@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Badge } from "react-bootstrap";
 import DataSection from "../components/DataSection";
-import Hero from '../components/Hero ';
+import Hero from '@/components/Hero';
 
 function PreviousEvents() {
   return (
