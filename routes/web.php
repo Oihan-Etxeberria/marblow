@@ -38,6 +38,11 @@ Route::post('/resend-verification', [AuthController::class, 'resendVerification'
 // Eventos
 Route::get('/events', [HomeController::class, 'events'])->name('events');
 
+// Bets
+Route::get('/bets', function () {
+    return Inertia::render('Bets');
+})->name('bets');
+
 // Blowers - Públicas
 Route::get('/blowers', [BlowerController::class, 'index'])->name('blowers.index');
 Route::get('/blowers/{blower:slug}', [BlowerController::class, 'show'])->name('blowers.show');
