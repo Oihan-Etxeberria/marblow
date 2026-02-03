@@ -8,6 +8,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 
 // Test
 Route::get('/test', [TestController::class, 'test'])->name('test');
@@ -45,14 +46,8 @@ Route::post('/resend-verification', [AuthController::class, 'resendVerification'
 ->name('verification.resend');
 
 //Events
-Route::get('/events', function () {
-    return Inertia::render('Events');
-})->name('events');
-
-//previous events
-Route::get('/previous', function () {
-    return Inertia::render('Previous');
-})->name('previous');
+Route::get('/events', [EventController::class, 'index'])->name('events');
+Route::get('/previous', [EventController::class, 'previous'])->name('events');
 
 // Blowers - Públicas
 Route::get('/blowers', [BlowerController::class, 'index'])->name('blowers.index');
