@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from '@inertiajs/react';
-import HeroSection from "./HeroSection";
+import HeroSection from '@/components/Hero';
 
 function Freestyle() {
   const { data, setData, post, processing, errors } = useForm({
@@ -35,13 +35,13 @@ function Freestyle() {
       )}
       
       <Form.Group className="mb-3">
-        <Form.Label className="text-white fw-bold">Nombre de la Competición</Form.Label>
+        <Form.Label className="text-white fw-bold">Name of the competition</Form.Label>
         <Form.Control
           type="text"
           name="nombre"
           value={data.nombre}
           onChange={e => setData('nombre', e.target.value)}
-          placeholder="Ej: Liga Regional 2024"
+          placeholder="Ex: Marbloro smoker challenge"
           size="lg"
           required
           disabled={processing}
@@ -49,13 +49,13 @@ function Freestyle() {
       </Form.Group>
 
       <Form.Group className="mb-4">
-        <Form.Label className="text-white fw-bold">Modalidad</Form.Label>
+        <Form.Label className="text-white fw-bold">Modality</Form.Label>
         <Form.Control
           type="text"
           name="modalidad"
           value={data.modalidad}
           onChange={e => setData('modalidad', e.target.value)}
-          placeholder="Ej: Individual, Por equipos, Mixta..."
+          placeholder="Ex: Solo, Duo, Squad, Minors..."
           size="lg"
           required
           disabled={processing}
@@ -70,7 +70,7 @@ function Freestyle() {
           className="px-4 gap-3 fw-bold shadow-lg"
           disabled={processing}
         >
-          {processing ? "Creando..." : "Crear Competición"}
+          {processing ? "Creating..." : "Create Competition"}
         </Button>
         <Button
           type="button"
@@ -80,7 +80,7 @@ function Freestyle() {
           onClick={handleReset}
           disabled={processing}
         >
-          Cancelar
+          Cancel
         </Button>
       </div>
     </Form>
@@ -88,8 +88,8 @@ function Freestyle() {
 
   return (
     <HeroSection
-      title="Nueva Competición"
-      subtitle="Completa el formulario para crear una nueva competición deportiva"
+      title="New Competition"
+      subtitle=" Complete the form to create a new competition"
       cosas={formulario}
     />
   );

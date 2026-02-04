@@ -92,9 +92,9 @@ const Navbar = () => {
                                 </li>
                                 <li><hr className="dropdown-divider" /></li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
+                                    <Link className="dropdown-item" href="/events/create">
                                         Freestyle
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
