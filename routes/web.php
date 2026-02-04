@@ -10,6 +10,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 
+
 // Test
 Route::get('/test', [TestController::class, 'test'])->name('test');
 Route::get('/dashboard', function () {
@@ -48,6 +49,11 @@ Route::post('/resend-verification', [AuthController::class, 'resendVerification'
 //Events
 Route::get('/events', [EventController::class, 'index'])->name('events');
 Route::get('/previous', [EventController::class, 'previous'])->name('events');
+
+//Frestyle
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
 
 // Blowers - Públicas
 Route::get('/blowers', [BlowerController::class, 'index'])->name('blowers.index');

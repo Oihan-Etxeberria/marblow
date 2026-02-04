@@ -4,21 +4,7 @@ import DataSection from "../components/DataSection";
 import Hero from "../components/Hero";
 
 function Events({ events = [] }) {
-  const renderBadge = (state) => {
-    switch (state) {
-      case "active":
-        return <Badge bg="success">Active</Badge>;
-      case "incoming":
-        return (
-          <Badge bg="warning" text="dark">
-            Incoming
-          </Badge>
-        );
-      default:
-        return <Badge bg="secondary">Unknown</Badge>;
-    }
-  };
-
+  
   return (
     <>
       <Hero
@@ -38,7 +24,6 @@ function Events({ events = [] }) {
                     <th>Competition</th>
                     <th>Location</th>
                     <th>Date</th>
-                    <th>State</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -48,7 +33,6 @@ function Events({ events = [] }) {
                       <td>{event.name}</td>
                       <td>{event.location}</td>
                       <td>{event.date.split('T')[0]}</td>
-                      <td>{renderBadge(event.state)}</td>
                     </tr>
                   ))}
                 </tbody>
