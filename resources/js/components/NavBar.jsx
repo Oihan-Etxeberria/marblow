@@ -72,7 +72,7 @@ const Navbar = () => {
                         <li className="nav-item dropdown">
                             <a 
                                 className={`nav-link dropdown-toggle ${isActive('events') ? 'active' : ''}`}
-                                href="#" 
+                                href="/events" 
                                 id="navbarDropdown" 
                                 role="button" 
                                 data-bs-toggle="dropdown"
@@ -86,13 +86,13 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="/previous">
+                                    <a className="dropdown-item" href={route('previous')}>
                                         Previous Events
                                     </a>
                                 </li>
                                 <li><hr className="dropdown-divider" /></li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
+                                    <a className="dropdown-item" href={route('events.create')}>
                                         Freestyle
                                     </a>
                                 </li>
@@ -196,9 +196,9 @@ const Navbar = () => {
                                     </li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li>
-                                        <a className="dropdown-item" href="#">
+                                        <Link href={route('profile.show')} className="dropdown-item">
                                             <i className="bi bi-person me-2"></i> My Profile
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
                                         <a className="dropdown-item" href="#">

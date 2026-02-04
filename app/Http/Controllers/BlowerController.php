@@ -26,7 +26,11 @@ class BlowerController extends Controller
     public function show($slug)
     {
         $blower = Blower::with('events')->where('slug', $slug)->firstOrFail();
-        return view('pages.blower', compact('blower'));
+        $blower->image_path = asset($blower->image_path);
+
+        return Inertia::render('Blowers/Show', [
+            'blower' => $blower,
+        ]);
     }
 
     // Mostrar formulario de creación

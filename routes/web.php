@@ -9,6 +9,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ProfileController;
 
 // Test
 Route::get('/test', [TestController::class, 'test'])->name('test');
@@ -47,7 +48,11 @@ Route::post('/resend-verification', [AuthController::class, 'resendVerification'
 
 //Events
 Route::get('/events', [EventController::class, 'index'])->name('events');
-Route::get('/previous', [EventController::class, 'previous'])->name('events');
+Route::get('/previous', [EventController::class, 'previous'])->name('previous');
+
+//Frestyle
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
 
 // Blowers - Públicas
 Route::get('/blowers', [BlowerController::class, 'index'])->name('blowers.index');
@@ -66,6 +71,22 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Rutas Protegidas (Admin)
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile.show');
+        
+    // Actualizar información del perfil (nombre, email)
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    
+    // Actualizar contraseña
+    Route::put('/password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.password.update');
+    
+    // Eliminar cuenta (soft delete)
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
     // CRUD Blowers
     Route::get('/admin/blowers/create', [BlowerController::class, 'create'])->name('blowers.create');
     Route::post('/admin/blowers', [BlowerController::class, 'store'])->name('blowers.store');
