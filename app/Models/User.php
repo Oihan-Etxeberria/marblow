@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'email_verification_token',
         'email_verified_at',
+        'role',
     ];
 
     /**
@@ -50,5 +51,11 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function hasAnyRole(string|array $roles): bool
+    {
+        $roles = is_array($roles) ? $roles : [$roles];
+        return in_array($this->role, $roles);
     }
 }

@@ -101,7 +101,10 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
+                                    <a
+                                        className="dropdown-item"
+                                        href="/previous"
+                                    >
                                         Previous Events
                                     </a>
                                 </li>
@@ -109,9 +112,12 @@ const Navbar = () => {
                                     <hr className="dropdown-divider" />
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
+                                    <Link
+                                        className="dropdown-item"
+                                        href="/events/create"
+                                    >
                                         Freestyle
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
@@ -127,7 +133,7 @@ const Navbar = () => {
 
                         <li className="nav-item">
                             <Link
-                                className={`nav-link ${isActive('bets') ? 'active' : ''}`}
+                                className={`nav-link ${isActive('contact') ? 'active' : ''}`}
                                 href={route('bets')}
                             >
                                 Bets

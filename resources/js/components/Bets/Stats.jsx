@@ -40,3 +40,5 @@ function Stats({ balance, bets, upcomingRaces }) {
     </div>
   );
 }
+
+export default Stats;

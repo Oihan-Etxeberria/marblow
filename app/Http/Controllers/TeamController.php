@@ -14,6 +14,7 @@ class TeamController extends Controller
     public function index()
     {
         $teams = Team::withCount('blowers')->get();
+        
         if (request()->header('X-Inertia')) {
             return Inertia::location(route('teams.index'));
         }

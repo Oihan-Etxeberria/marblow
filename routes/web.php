@@ -8,12 +8,23 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
+
 
 // Test
 Route::get('/test', [TestController::class, 'test'])->name('test');
 Route::get('/dashboard', function () {
     return Inertia::render('Home');
 })->name('dashboard');
+
+Route::get('/deploy', function () {
+    return Inertia::render('Deploy');
+})->name('deploy');
+
+// Bets
+Route::get('/bets', function () {
+    return Inertia::render('Bets');
+})->name('bets');
 
 // Página principal
 Route::get('/', function () {
@@ -35,8 +46,14 @@ Route::get('/verify-email/{id}/{token}', [AuthController::class, 'verifyEmail'])
 Route::post('/resend-verification', [AuthController::class, 'resendVerification'])
 ->name('verification.resend');
 
-// Eventos
-Route::get('/events', [HomeController::class, 'events'])->name('events');
+//Events
+Route::get('/events', [EventController::class, 'index'])->name('events');
+Route::get('/previous', [EventController::class, 'previous'])->name('events');
+
+//Frestyle
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
 
 // Bets
 Route::get('/bets', function () {
