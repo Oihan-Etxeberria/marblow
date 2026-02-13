@@ -1,45 +1,77 @@
-# Usamos Node para compilar los assets de React
-FROM node:20 AS frontend-builder
+########################################
+# 1️⃣ STAGE FRONTEND (React + Vite)
+########################################
+FROM node:20-alpine AS frontend
+
 WORKDIR /app
-COPY package*.json ./
+
+# Copiamos solo lo necesario para instalar deps
+COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
+
+# Instala dependencias (elige el que uses)
 RUN npm install
+
+# Copiamos el resto del proyecto
 COPY . .
+
+# Compila los assets
 RUN npm run build
 
-# Imagen base de PHP con FPM (FastCGI Process Manager)
-FROM php:8.2-fpm
 
-# Instalamos dependencias del sistema necesarias para Laravel
+########################################
+# 2️⃣ STAGE BACKEND (PHP + Apache)
+########################################
+FROM php:8.2-apache
+
+# Dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
+    libsqlite3-dev \
+    sqlite3 \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libzip-dev \
     zip \
     unzip \
-    libzip-dev
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalamos extensiones de PHP que requiere Laravel
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+# Extensiones PHP necesarias para Laravel
+RUN docker-php-ext-install \
+    pdo_mysql \
+    pdo_sqlite \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip
 
-# Instalamos Composer (copiándolo desde la imagen oficial)
+# Apache config
+RUN a2enmod rewrite
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Definimos el directorio de trabajo
-WORKDIR /var/www
+# Directorio de trabajo
+WORKDIR /var/www/html
 
-# Copiamos los archivos del proyecto
+# Copiamos el backend
 COPY . .
 
-# Copiamos los archivos compilados de React desde la "Etapa 1"
-COPY --from=frontend-builder /app/public/build ./public/build
+# Copiamos los assets ya compilados desde Node
+COPY --from=frontend /app/public/build ./public/build
 
-# Instalamos las dependencias de PHP (Laravel)
-RUN composer install --no-interaction --optimize-autoloader --no-dev
+# Instalamos dependencias PHP
+RUN composer install --no-interaction --no-dev --optimize-autoloader
 
-# Ajustamos permisos para que Laravel pueda escribir en storage y bootstrap/cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# SQLite + permisos
+RUN mkdir -p database storage bootstrap/cache \
+    && touch database/database.sqlite \
+    && chown -R www-data:www-data storage bootstrap/cache database
 
-EXPOSE 9000
-CMD ["php-fpm"]
+EXPOSE 80
