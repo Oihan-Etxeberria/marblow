@@ -7,6 +7,8 @@ function Freestyle() {
   const { data, setData, post, processing, errors } = useForm({
     nombre: '',
     modalidad: '',
+    descripcion: '',
+    fecha: '',
   });
 
   const handleSubmit = (e) => {
@@ -18,6 +20,8 @@ function Freestyle() {
     setData({
       nombre: '',
       modalidad: '',
+      descripcion: '',
+      fecha: '',
     });
   };
 
@@ -33,7 +37,17 @@ function Freestyle() {
           {errors.modalidad}
         </div>
       )}
-      
+      {errors.descripcion && (
+        <div className="alert alert-danger" role="alert">
+          {errors.descripcion}
+        </div>
+      )}
+      {errors.fecha && (
+        <div className="alert alert-danger" role="alert">
+          {errors.fecha}
+        </div>
+      )}
+
       <Form.Group className="mb-3">
         <Form.Label className="text-white fw-bold">Name of the competition</Form.Label>
         <Form.Control
@@ -41,7 +55,7 @@ function Freestyle() {
           name="nombre"
           value={data.nombre}
           onChange={e => setData('nombre', e.target.value)}
-          placeholder="Ex: Marbloro smoker challenge"
+          placeholder="Ex: Marlboro smoker challenge"
           size="lg"
           required
           disabled={processing}
@@ -49,13 +63,26 @@ function Freestyle() {
       </Form.Group>
 
       <Form.Group className="mb-4">
-        <Form.Label className="text-white fw-bold">Modality</Form.Label>
+        <Form.Label className="text-white fw-bold">Location</Form.Label>
         <Form.Control
           type="text"
           name="modalidad"
           value={data.modalidad}
           onChange={e => setData('modalidad', e.target.value)}
-          placeholder="Ex: Solo, Duo, Squad, Minors..."
+          placeholder="Ex: Madrid, Spain"
+          size="lg"
+          required
+          disabled={processing}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-4">
+        <Form.Label className="text-white fw-bold">Date</Form.Label>
+        <Form.Control
+          type="date"
+          name="fecha"
+          value={data.fecha}
+          onChange={e => setData('fecha', e.target.value)}
           size="lg"
           required
           disabled={processing}

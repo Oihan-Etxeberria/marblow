@@ -13,13 +13,14 @@ class BlowerController extends Controller
     // Mostrar todos los blowers
     public function index()
     {
-        $blowers = Blower::orderBy('name')->get();
+        $blowers = Blower::orderBy('name')->get()->map(function ($blower) {
+            $blower->image_path = asset($blower->image_path);
+            return $blower;
+        });
 
-        if (request()->header('X-Inertia')) {
-            return Inertia::location(route('blowers.index'));
-        }
-
-        return view('pages.blowers', compact('blowers'));
+        return Inertia::render('Blowers/Index', [
+            'blowers' => $blowers,
+        ]);
     }
 
     // Mostrar un blower específico
@@ -36,7 +37,11 @@ class BlowerController extends Controller
     // Mostrar formulario de creación
     public function create()
     {
-        return view('admin.blowers.create');
+        $events = Event::all();
+
+        return Inertia::render('Blowers/Create', [
+            'events' => $events,
+        ]);
     }
 
     // Almacenar nuevo blower
@@ -92,7 +97,12 @@ class BlowerController extends Controller
     public function edit(Blower $blower)
     {
         $events = Event::all();
-        return view('admin.blowers.edit', compact('blower', 'events'));
+        //return view('admin.blowers.edit', compact('blower', 'events'));
+
+        return Inertia::render('Blowers/Edit', [
+            'blower' => $blower->load('events'),
+            'events' => $events,
+        ]);
     }
 
     // Actualizar blower

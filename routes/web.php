@@ -101,4 +101,3 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/admin/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
     Route::delete('/admin/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
 });
-
