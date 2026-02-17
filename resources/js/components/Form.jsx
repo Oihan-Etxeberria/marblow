@@ -37,7 +37,6 @@ const FIELD_CONFIG = {
     type: 'password',
     placeholder: 'Enter password',
     required: true,
-    helpText: "Minimum 8 characters"
   },
   password_confirmation: {
     label: 'Confirm Password',
@@ -55,10 +54,17 @@ const Form = ({
   submitText = "Send", 
   className = "", 
   serverErrors = {},
-  clientValidation = true
+  clientValidation = true,
+  resetKey = null  // <- cuando cambie, resetea el formulario
 }) => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
+
+  // Resetear formulario cuando resetKey cambia (ej: al abrir el modal)
+  useEffect(() => {
+    setFormData({});
+    setErrors({});
+  }, [resetKey]);
 
   // Actualizar errores cuando llegan del servidor
   useEffect(() => {
@@ -208,7 +214,7 @@ const Form = ({
                 
                 {field.type === 'textarea' ? (
                   <textarea
-                    className={`form-control ${serverError ? 'is-invalid' : ''}`}
+                    className={`form-control ${(clientError || serverError) ? 'is-invalid' : ''}`}
                     id={fieldName}
                     name={fieldName}
                     rows={field.rows || 3}
@@ -219,7 +225,7 @@ const Form = ({
                 ) : (
                   <input
                     type={field.type}
-                    className={`form-control ${serverError ? 'is-invalid' : ''}`}
+                    className={`form-control ${(clientError || serverError) ? 'is-invalid' : ''}`}
                     id={fieldName}
                     name={fieldName}
                     placeholder={field.placeholder}
@@ -246,15 +252,19 @@ const Form = ({
         );
       })}
       
-      <div className={secondaryButton ? "regist" : ""}>
+      <div className="d-flex justify-content-between align-items-center">
         {secondaryButton && (
           <a href={secondaryButton.href} className="btn btn-secondary">
             {secondaryButton.text}
           </a>
         )}
-        <button type="submit" className="btn btn-primary">
-          {submitText}
-        </button>
+
+        {/* When no secondary button → empty div takes no space → submit goes right */}
+        <div>
+          <button type="submit" className="btn btn-primary">
+            {submitText}
+          </button>
+        </div>
       </div>
     </form>
   );

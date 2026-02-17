@@ -33,17 +33,16 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'modalidad' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'date' => 'required|date',
+            'description' => 'nullable|string',
         ]);
 
-        $event = Event::create([
-            'nombre' => $validated['nombre'],
-            'modalidad' => $validated['modalidad'],
-            'date' => now(), // Ajusta según necesites
-        ]);
+        Event::create($validated);
 
-        return redirect()->route('events.index')
-            ->with('success', 'Competición creada exitosamente');
+        return redirect()
+            ->route('events')
+            ->with('success', 'Competition created successfully');
     }
 }

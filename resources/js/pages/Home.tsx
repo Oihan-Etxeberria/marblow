@@ -21,7 +21,7 @@ const Home = () => {
         }}
         secondaryButton={{
             label: "View Rulebook",
-            href: "#rules",
+            href: "/rulebook",
             variant: "outline-light"
         }}
       />

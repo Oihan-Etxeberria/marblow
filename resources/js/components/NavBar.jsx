@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 
-const Navbar = () => {
+const Navbar = ({ onLoginClick, onRegisterClick }) => {
     const { auth, url } = usePage().props;
     const user = auth?.user;
     
@@ -140,7 +140,12 @@ const Navbar = () => {
                                             <i className="bi bi-flag me-2"></i> Nuevo Team
                                         </Link>
                                     </li>
-                                    <li><hr className="dropdown-divider" /></li>
+                                    <li>
+                                        <Link className="dropdown-item" href={route('contact.index')}>
+                                            <i className="bi bi-envelope me-2"></i> Contact Messages
+                                        </Link>
+                                    </li>
+                                    {/* <li><hr className="dropdown-divider" /></li>
                                     <li>
                                         <Link className="dropdown-item" href={route('blowers.index')}>
                                             <i className="bi bi-people me-2"></i> Gestionar Blowers
@@ -150,7 +155,7 @@ const Navbar = () => {
                                         <Link className="dropdown-item" href={route('teams.index')}>
                                             <i className="bi bi-flag-fill me-2"></i> Gestionar Teams
                                         </Link>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </li>
                         )}
@@ -162,17 +167,21 @@ const Navbar = () => {
                             <>
                                 {/* Usuario no autenticado */}
                                 <li className="nav-item">
-                                    <Link 
-                                        className={`nav-link ${isActive('login') ? 'active' : ''}`}
-                                        href={route('login')}
+                                    <button
+                                        className={`nav-link btn btn-link ${isActive('login') ? 'active' : ''}`}
+                                        onClick={onLoginClick}
+                                        style={{ textDecoration: 'none' }}
                                     >
                                         <i className="bi bi-box-arrow-in-right me-1"></i> Login
-                                    </Link>
+                                    </button>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="btn btn-outline-light ms-2" href={route('register')}>
+                                    <button
+                                        className="btn btn-outline-light ms-2"
+                                        onClick={onRegisterClick}
+                                    >
                                         <i className="bi bi-person-plus me-1"></i> Register
-                                    </Link>
+                                    </button>
                                 </li>
                             </>
                         ) : (
@@ -199,11 +208,6 @@ const Navbar = () => {
                                         <Link href={route('profile.show')} className="dropdown-item">
                                             <i className="bi bi-person me-2"></i> My Profile
                                         </Link>
-                                    </li>
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            <i className="bi bi-gear me-2"></i> Settings
-                                        </a>
                                     </li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li>

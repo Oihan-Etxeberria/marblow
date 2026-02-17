@@ -21,6 +21,11 @@ Route::get('/deploy', function () {
     return Inertia::render('Deploy');
 })->name('deploy');
 
+// RuleBook
+Route::get('/rulebook', function () {
+    return Inertia::render('Rulebook');
+})->name('rulebook');
+
 // Bets
 Route::get('/bets', function () {
     return Inertia::render('Bets');
@@ -64,8 +69,8 @@ Route::get('/teams/{team:slug}', [TeamController::class, 'show'])->name('teams.s
 Route::post('/teams/{team:slug}/join', [TeamController::class, 'join'])->name('teams.join');
 
 // Contacto
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 
 
@@ -100,4 +105,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
     Route::put('/admin/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
     Route::delete('/admin/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
+
+    //Los mensajes de contacto
+    Route::get('/admin/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::delete('/admin/contact/{contactMessage}', [ContactController::class, 'destroy'])->name('contact.destroy');
 });

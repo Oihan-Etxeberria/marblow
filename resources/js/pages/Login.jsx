@@ -1,61 +1,27 @@
-import { router } from '@inertiajs/react';
-import Hero from '@/components/Hero';
-import "./Contact.css"
-import Form from '@/components/Form';
+import { useEffect } from 'react';
+import { router, usePage } from '@inertiajs/react';
+import LoginModal from '@/components/LoginModal';
+import { useState } from 'react';
 
 const Login = ({ errors: serverErrors = {} }) => {
-  
-  const handleSubmit = (formData) => {
-    router.post(route('login.submit'), formData, {
-      preserveState: true,
-      preserveScroll: true,
-      replace: true,
+  const { auth } = usePage().props;
+  const [isOpen, setIsOpen] = useState(true);
 
-      onStart: () => {
-        console.log('Enviando login...');
-      },
+  // Si ya está autenticado, redirigir a home
+  useEffect(() => {
+    if (auth?.user) {
+      router.visit('/');
+    }
+  }, [auth]);
 
-      onSuccess: (page) => {
-        console.log('Login exitoso!', page);
-      },
-
-      onError: (errors) => {
-        console.log('Errores de validación:', errors);
-        
-        const firstErrorField = Object.keys(errors)[0];
-        if (firstErrorField) {
-          document.getElementById(firstErrorField)?.scrollIntoView({ behavior: 'smooth' });
-        }
-      },
-
-      onFinish: () => {
-        console.log('Petición finalizada');
-      },
-    });
-  };
+  if (auth?.user) return null;
 
   return (
-    <>
-      <Hero 
-        title="Log in"
-        subtitle="Log in as user to bet, sign up as blower... and much more!"
-        cosas={
-          <Form 
-            fields={['username', 'password']}
-            onSubmit={handleSubmit}
-            submitText="Log in"
-            secondaryButton={{ href: '/register', text: 'Register' }}
-            serverErrors={serverErrors}
-            clientValidation={false} // ← Desactiva validación cliente
-          />
-        }
-      />
-      {serverErrors.message && (
-        <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">
-          {serverErrors.message}
-        </div>
-      )}
-    </>
+    <LoginModal
+      isOpen={isOpen}
+      onClose={() => router.visit('/')}
+      errors={serverErrors}
+    />
   );
 };
 

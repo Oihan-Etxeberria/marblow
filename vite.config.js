@@ -11,7 +11,7 @@ export default defineConfig({
         react(),
     ],
     server: {
-        host: '10.14.0.142',
+        host: '10.14.0.179',
         port: 5173,
         cors: true,
     },
