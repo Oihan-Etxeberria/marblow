@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap");
 
+
+
+
 body {
   background-image: url("/public/argazkiak/FondoA.jpg");
   background-size: cover;
@@ -118,4 +121,38 @@ footer .iconos img:hover {
 
 main {
   flex: 1;
+}
+
+/* 1. Ocultar el aviso superior de Google Translate */
+.goog-te-banner-frame, 
+.goog-te-banner, 
+.skiptranslate, 
+#goog-gt-tt, 
+.goog-te-balloon-frame {
+    display: none !important;
+}
+
+body {
+    top: 0px !important;
+}
+
+/* 2. Estilo para tus botones EN / ES */
+.btn-lang {
+    background: none;
+    border: none;
+    color: #adadad; /* Gris clarito */
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-lang:hover {
+    color: #ffffff; /* Blanco al pasar el ratón */
+}
+
+/* 3. Evitar que Google mueva el contenido hacia abajo */
+.goog-te-menu-value {
+    display: none !important;
 }
