@@ -14,29 +14,48 @@ class TeamController extends Controller
     public function index()
     {
         $teams = Team::withCount('blowers')->get();
-        
-        if (request()->header('X-Inertia')) {
-            return Inertia::location(route('teams.index'));
-        }
 
-        return view('pages.teams', compact('teams'));
+        return Inertia::render('Teams/Index', [
+            'teams' => $teams,
+        ]);
     }
 
     // Mostrar un equipo específico
     public function show(Team $team)
     {
         $team->load('blowers');
-        // Obtener todos los blowers para el formulario de admin
-        $allBlowers = Blower::all();
+        
+        $team->blowers->transform(function ($blower) {
+            $blower->image_path = asset($blower->image_path);
+            return $blower;
+        });
 
-        return view('pages.team', compact('team', 'allBlowers'));
+        // Procesar el logo del equipo si existe
+        if ($team->logo) {
+            $team->logo = asset($team->logo);
+        }
+
+        // Obtener todos los blowers para el formulario de admin
+        $allBlowers = null;
+        if (auth()->check() && auth()->user()->hasAnyRole('admin')) {
+            $allBlowers = Blower::orderBy('name')->get(['id', 'name', 'surname']);
+        }
+
+        return Inertia::render('Teams/Show', [
+            'team' => $team,
+            'allBlowers' => $allBlowers,
+        ]);
     }
 
     // Mostrar formulario de creación
     public function create()
     {
         $blowers = Blower::all();
-        return view('admin.teams.create', compact('blowers'));
+        // return view('admin.teams.create', compact('blowers'));
+        
+        return Inertia::render('Teams/Create', [
+            'blowers' => $blowers,
+        ]);
     }
 
     // Almacenar nuevo equipo
@@ -76,7 +95,11 @@ class TeamController extends Controller
     public function edit(Team $team)
     {
         $blowers = Blower::all();
-        return view('admin.teams.edit', compact('team', 'blowers'));
+        // return view('admin.teams.edit', compact('team', 'blowers'));
+        return Inertia::render('Teams/Edit', [
+            'team' => $team->load('blowers'),
+            'blowers' => $blowers,
+        ]);
     }
 
     // Actualizar equipo

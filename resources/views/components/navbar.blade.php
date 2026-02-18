@@ -38,7 +38,7 @@
                 <!-- Menú desplegable Events -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle {{ request()->routeIs('events') ? 'active' : '' }}" 
-                       href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                       href="/events" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                         Events
                     </a>
                     <ul class="dropdown-menu">
@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="/previous">
                                 Previous Events
                             </a>
                         </li>

@@ -1,7 +1,7 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-const Navbar = () => {
+const Navbar = ({ onLoginClick, onRegisterClick }) => {
     const { auth, url } = usePage().props;
     const user = auth?.user;
 
@@ -84,9 +84,9 @@ const Navbar = () => {
                         <li className="nav-item dropdown">
                             <a
                                 className={`nav-link dropdown-toggle ${isActive('events') ? 'active' : ''}`}
-                                href="#"
-                                id="navbarDropdown"
-                                role="button"
+                                href="/events" 
+                                id="navbarDropdown" 
+                                role="button" 
                                 data-bs-toggle="dropdown"
                             >
                                 Events
@@ -101,10 +101,7 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="/previous"
-                                    >
+                                    <a className="dropdown-item" href={route('previous')}>
                                         Previous Events
                                     </a>
                                 </li>
@@ -112,10 +109,7 @@ const Navbar = () => {
                                     <hr className="dropdown-divider" />
                                 </li>
                                 <li>
-                                    <Link
-                                        className="dropdown-item"
-                                        href="/events/create"
-                                    >
+                                    <a className="dropdown-item" href={route('events.create')}>
                                         Freestyle
                                     </Link>
                                 </li>
@@ -172,8 +166,11 @@ const Navbar = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <hr className="dropdown-divider" />
+                                        <Link className="dropdown-item" href={route('contact.index')}>
+                                            <i className="bi bi-envelope me-2"></i> Contact Messages
+                                        </Link>
                                     </li>
+                                    {/* <li><hr className="dropdown-divider" /></li>
                                     <li>
                                         <Link
                                             className="dropdown-item"
@@ -191,7 +188,7 @@ const Navbar = () => {
                                             <i className="bi bi-flag-fill me-2"></i>{' '}
                                             Gestionar Teams
                                         </Link>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </li>
                         )}
@@ -203,22 +200,21 @@ const Navbar = () => {
                             <>
                                 {/* Usuario no autenticado */}
                                 <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('login') ? 'active' : ''}`}
-                                        href={route('login')}
+                                    <button
+                                        className={`nav-link btn btn-link ${isActive('login') ? 'active' : ''}`}
+                                        onClick={onLoginClick}
+                                        style={{ textDecoration: 'none' }}
                                     >
-                                        <i className="bi bi-box-arrow-in-right me-1"></i>{' '}
-                                        Login
-                                    </Link>
+                                        <i className="bi bi-box-arrow-in-right me-1"></i> Login
+                                    </button>
                                 </li>
                                 <li className="nav-item">
-                                    <Link
+                                    <button
                                         className="btn btn-outline-light ms-2"
-                                        href={route('register')}
+                                        onClick={onRegisterClick}
                                     >
-                                        <i className="bi bi-person-plus me-1"></i>{' '}
-                                        Register
-                                    </Link>
+                                        <i className="bi bi-person-plus me-1"></i> Register
+                                    </button>
                                 </li>
                             </>
                         ) : (
@@ -246,16 +242,9 @@ const Navbar = () => {
                                         <hr className="dropdown-divider" />
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="#">
-                                            <i className="bi bi-person me-2"></i>{' '}
-                                            My Profile
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            <i className="bi bi-gear me-2"></i>{' '}
-                                            Settings
-                                        </a>
+                                        <Link href={route('profile.show')} className="dropdown-item">
+                                            <i className="bi bi-person me-2"></i> My Profile
+                                        </Link>
                                     </li>
                                     <li>
                                         <hr className="dropdown-divider" />

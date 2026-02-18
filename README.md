@@ -1,15 +1,14 @@
-- git clone -b master https://github.com/Oihan-Etxeberria/marblow.git
-- cd marblow
-- composer update
-- composer install
-- npm install
-- php artisan migrate
-	- Si esto no va:
-	- sudo apt update
-	- sudo apt install php-sqlite3
-- php artisan db:seed
+# marblow
+Proiektua etxetik irikitzeko programa hauek izan behar dituzu instalatuak:
+- Node.js
+- Composer
+- PHP
 
-- 
-- Poner en marcha:
-- php artisan serve --host=0.0.0.0
-- npm run dev
+Ondoren komando hauek
+git clone -b master https://github.com/Oihan-Etxeberria/marblow.git
+composer install
+npm install
+
+Eta gero, bi terminal ezberdinetan, bakoitzean hauetako komando bat jarri:
+php artisan serve
+npm run dev

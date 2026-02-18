@@ -9,6 +9,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ProfileController;
 
 
 // Test
@@ -20,6 +21,11 @@ Route::get('/dashboard', function () {
 Route::get('/deploy', function () {
     return Inertia::render('Deploy');
 })->name('deploy');
+
+// RuleBook
+Route::get('/rulebook', function () {
+    return Inertia::render('Rulebook');
+})->name('rulebook');
 
 // Bets
 Route::get('/bets', function () {
@@ -48,7 +54,11 @@ Route::post('/resend-verification', [AuthController::class, 'resendVerification'
 
 //Events
 Route::get('/events', [EventController::class, 'index'])->name('events');
-Route::get('/previous', [EventController::class, 'previous'])->name('events');
+Route::get('/previous', [EventController::class, 'previous'])->name('previous');
+
+//Frestyle
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
 
 //Frestyle
 Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
@@ -70,13 +80,29 @@ Route::get('/teams/{team:slug}', [TeamController::class, 'show'])->name('teams.s
 Route::post('/teams/{team:slug}/join', [TeamController::class, 'join'])->name('teams.join');
 
 // Contacto
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 
 
 // Rutas Protegidas (Admin)
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile.show');
+        
+    // Actualizar información del perfil (nombre, email)
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    
+    // Actualizar contraseña
+    Route::put('/password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.password.update');
+    
+    // Eliminar cuenta (soft delete)
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
     // CRUD Blowers
     Route::get('/admin/blowers/create', [BlowerController::class, 'create'])->name('blowers.create');
     Route::post('/admin/blowers', [BlowerController::class, 'store'])->name('blowers.store');
@@ -90,5 +116,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
     Route::put('/admin/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
     Route::delete('/admin/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
-});
 
+    //Los mensajes de contacto
+    Route::get('/admin/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::delete('/admin/contact/{contactMessage}', [ContactController::class, 'destroy'])->name('contact.destroy');
+});
