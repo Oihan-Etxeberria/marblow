@@ -50,7 +50,7 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                 </button>
 
                 {/* Contenido del navbar */}
-                <div className="navbar-collapse collapse" id="navbarMain">
+                <div className="navbar-collapse" id="navbarMain">
                     {/* Menú principal - izquierda */}
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
@@ -84,9 +84,9 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                         <li className="nav-item dropdown">
                             <a
                                 className={`nav-link dropdown-toggle ${isActive('events') ? 'active' : ''}`}
-                                href="/events" 
-                                id="navbarDropdown" 
-                                role="button" 
+                                href="/events"
+                                id="navbarDropdown"
+                                role="button"
                                 data-bs-toggle="dropdown"
                             >
                                 Events
@@ -101,7 +101,10 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href={route('previous')}>
+                                    <a
+                                        className="dropdown-item"
+                                        href={route('previous')}
+                                    >
                                         Previous Events
                                     </a>
                                 </li>
@@ -109,9 +112,12 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                                     <hr className="dropdown-divider" />
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href={route('events.create')}>
+                                    <a
+                                        className="dropdown-item"
+                                        href={route('events.create')}
+                                    >
                                         Freestyle
-                                    </Link>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -127,7 +133,7 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
 
                         <li className="nav-item">
                             <Link
-                                className={`nav-link ${isActive('contact') ? 'active' : ''}`}
+                                className={`nav-link ${isActive('bets') ? 'active' : ''}`}
                                 href={route('bets')}
                             >
                                 Bets
@@ -166,8 +172,12 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" href={route('contact.index')}>
-                                            <i className="bi bi-envelope me-2"></i> Contact Messages
+                                        <Link
+                                            className="dropdown-item"
+                                            href={route('contact.index')}
+                                        >
+                                            <i className="bi bi-envelope me-2"></i>{' '}
+                                            Contact Messages
                                         </Link>
                                     </li>
                                     {/* <li><hr className="dropdown-divider" /></li>
@@ -205,7 +215,8 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                                         onClick={onLoginClick}
                                         style={{ textDecoration: 'none' }}
                                     >
-                                        <i className="bi bi-box-arrow-in-right me-1"></i> Login
+                                        <i className="bi bi-box-arrow-in-right me-1"></i>{' '}
+                                        Login
                                     </button>
                                 </li>
                                 <li className="nav-item">
@@ -213,7 +224,8 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                                         className="btn btn-outline-light ms-2"
                                         onClick={onRegisterClick}
                                     >
-                                        <i className="bi bi-person-plus me-1"></i> Register
+                                        <i className="bi bi-person-plus me-1"></i>{' '}
+                                        Register
                                     </button>
                                 </li>
                             </>
@@ -242,8 +254,12 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                                         <hr className="dropdown-divider" />
                                     </li>
                                     <li>
-                                        <Link href={route('profile.show')} className="dropdown-item">
-                                            <i className="bi bi-person me-2"></i> My Profile
+                                        <Link
+                                            href={route('profile.show')}
+                                            className="dropdown-item"
+                                        >
+                                            <i className="bi bi-person me-2"></i>{' '}
+                                            My Profile
                                         </Link>
                                     </li>
                                     <li>

@@ -6,60 +6,55 @@ function HeroSection({
   subtitle,
   primaryButton,
   secondaryButton,
-  cosas
+  cosas,
+  heroStyle
 }) {
   return (
-    <section className="d-flex justify-content-center align-items-center py-5">
-      <Container>
-        <div className="hero-blur text-center">
-          {title && (
-            <h1 className="mb-3 display-3">
-              {title}
-            </h1>
-          )}
+      <section className="d-flex justify-content-center align-items-center py-5">
+          <Container>
+              <div className="hero-blur text-center" style={heroStyle}>
+                  {title && <h1 className="display-3 mb-3">{title}</h1>}
 
-          {subtitle && (
-            <p
-              className="lead mb-4"
-              style={{ maxWidth: "800px", margin: "0 auto" }}
-            >
-              {subtitle}
-            </p>
-          )}
-          {cosas && (
-            <div className="hero-cosas">
-              {cosas}
-            </div>
-          )}
+                  {subtitle && (
+                      <p
+                          className="lead mb-4"
+                          style={{ maxWidth: '800px', margin: '0 auto' }}
+                      >
+                          {subtitle}
+                      </p>
+                  )}
+                  {cosas && <div className="hero-cosas">{cosas}</div>}
 
-          {(primaryButton || secondaryButton) && (
-            <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-              {primaryButton && (
-                <Button
-                  href={primaryButton.href}
-                  variant={primaryButton.variant || "primary"}
-                  size="lg"
-                  className="px-4 gap-3 fw-bold shadow-lg"
-                >
-                  {primaryButton.label}
-                </Button>
-              )}
+                  {(primaryButton || secondaryButton) && (
+                      <div className="d-grid d-sm-flex justify-content-sm-center gap-2">
+                          {primaryButton && (
+                              <Button
+                                  href={primaryButton.href}
+                                  variant={primaryButton.variant || 'primary'}
+                                  size="lg"
+                                  className="fw-bold gap-3 px-4 shadow-lg"
+                              >
+                                  {primaryButton.label}
+                              </Button>
+                          )}
 
-              {secondaryButton && (
-                <Button
-                  href={secondaryButton.href}
-                  variant={secondaryButton.variant || "outline-light"}
-                  size="lg"
-                  className="px-4"
-                >
-                  {secondaryButton.label}
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
-      </Container>
-    </section>
+                          {secondaryButton && (
+                              <Button
+                                  href={secondaryButton.href}
+                                  variant={
+                                      secondaryButton.variant || 'outline-light'
+                                  }
+                                  size="lg"
+                                  className="px-4"
+                              >
+                                  {secondaryButton.label}
+                              </Button>
+                          )}
+                      </div>
+                  )}
+              </div>
+          </Container>
+      </section>
   );
 }
 
