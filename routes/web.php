@@ -10,6 +10,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BettingWindowController;
+use App\Http\Controllers\BetController;
 
 
 // Test
@@ -28,9 +30,9 @@ Route::get('/rulebook', function () {
 })->name('rulebook');
 
 // Bets
-Route::get('/bets', function () {
-    return Inertia::render('Bets');
-})->name('bets');
+Route::get('/bets', [BettingWindowController::class, 'index'])->name('bets');
+Route::get('/bets/debug', [BettingWindowController::class, 'debug'])->name('bets.debug');
+Route::get('/events/{event}/bet', [BetController::class, 'show'])->name('bet.place');
 
 // Página principal
 Route::get('/', function () {
@@ -64,11 +66,6 @@ Route::post('/events', [EventController::class, 'store'])->name('events.store');
 Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 Route::post('/events', [EventController::class, 'store'])->name('events.store');
 
-
-// Bets
-Route::get('/bets', function () {
-    return Inertia::render('Bets');
-})->name('bets');
 
 // Blowers - Públicas
 Route::get('/blowers', [BlowerController::class, 'index'])->name('blowers.index');
